@@ -1,1 +1,1 @@
-### Entity und DTO Klassen
+### Model Klassen bzw. Datenbankentitäten

@@ -14,15 +14,14 @@ import java.util.List;
 
 @RequestMapping("/products")
 @RestController
-public class ProductControllerV1 {
+public class ProductController {
 
     private final ProductService productService;
 
-    public ProductControllerV1 (ProductService productService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET})
     @GetMapping("/catalog")
     public ResponseEntity<List<Product>> getAllCatalogProducts() {
 
@@ -31,7 +30,6 @@ public class ProductControllerV1 {
         return ResponseEntity.ok(products);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET})
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ANBIETER')")
     @GetMapping("/all")
     public ResponseEntity<List<Product>> getAllUserOwnedProducts() {
@@ -44,7 +42,6 @@ public class ProductControllerV1 {
         return ResponseEntity.ok(ownedProducts);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET})
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ANBIETER') or hasRole('ROLE_ABNEHMER')")
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductDetails(@PathVariable int id) {
@@ -53,7 +50,6 @@ public class ProductControllerV1 {
         return ResponseEntity.ok(product);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.POST})
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ANBIETER')")
     @PostMapping("/create")
     public ResponseEntity<Product> createProduct(@RequestBody ProductDto createProductDto) throws IOException {
@@ -66,7 +62,6 @@ public class ProductControllerV1 {
         return ResponseEntity.ok(savedProduct);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.PATCH})
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ANBIETER')")
     @PatchMapping("/update/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable int id, @RequestBody ProductDto updateProductDto) throws IOException {
@@ -79,7 +74,6 @@ public class ProductControllerV1 {
         return ResponseEntity.ok(updatedProduct);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.DELETE})
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ANBIETER')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable int id) {

@@ -20,7 +20,6 @@ public class RequestController {
         this.requestService = requestService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET})
     @GetMapping("/all")
     public ResponseEntity<Set<Request>> getAllUserRequests() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -32,7 +31,6 @@ public class RequestController {
         return ResponseEntity.ok(requests);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.POST})
     @PostMapping("/create/{id}")
     public ResponseEntity<Request> createRequest(@PathVariable int id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

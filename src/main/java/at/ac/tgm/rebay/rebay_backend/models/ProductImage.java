@@ -10,11 +10,13 @@ public class ProductImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false , name = "image_id")
     private int id;
 
     @Column(nullable = false , name = "image_data")
     private String image;
 
+    @Column(nullable = false , name = "is_main_image")
     private boolean isMainImage;
 
     @ManyToOne

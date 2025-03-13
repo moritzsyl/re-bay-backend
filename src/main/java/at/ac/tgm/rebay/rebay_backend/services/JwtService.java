@@ -19,7 +19,6 @@ public class JwtService {
 
     @Value("${security.jwt.secret-key}") //application.properties
     private String secretKey; //SecretKey für die Verschlüsselung
-
     @Value("${security.jwt.expiration-time}") //application.properties
     private long jwtExpirationInMs; //Zeit in Millisekunden, die der Token gültig ist
 

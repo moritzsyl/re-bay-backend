@@ -1,1 +1,1 @@
-### Geschäfts-Logik
+### Logik

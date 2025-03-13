@@ -1,8 +1,8 @@
-package at.ac.tgm.rebay.rebay_backend.config;
+package at.ac.tgm.rebay.rebay_backend.dtos;
 
 import at.ac.tgm.rebay.rebay_backend.models.User;
 
-public class LoginResponse {
+public class LoginResponseDto {
 
     private User user;
 
@@ -11,7 +11,7 @@ public class LoginResponse {
     private long expiresIn;
 
     //------------------------------------------------------------------------------------------------------------------
-    //Getter und Setter für die Attribute der Klasse LoginResponse
+    //Getter und Setter für die Attribute der Klasse LoginResponseDto
 
     public User getUser() {
         return user;

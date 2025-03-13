@@ -13,7 +13,6 @@ import java.util.Set;
 public class RequestService {
 
     private final RequestRepository requestRepository;
-
     private final ProductRepository productRepository;
 
     public RequestService(RequestRepository requestRepository, ProductRepository productRepository) {

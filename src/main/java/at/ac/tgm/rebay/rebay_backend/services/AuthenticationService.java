@@ -17,11 +17,8 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private final RoleRepository roleRepository;
-
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationService(

@@ -1,8 +1,10 @@
 ### Projektstruktur
 
-    config/ – Enthält alle Konfigurationen (z.B. für Spring Security, Datenbank, externen APIs).
-    controllers/ – Enthält die Controller, die HTTP-Anfragen verarbeiten.
-    models/ – Enthält die Datenentitäten, die die Tabellen in der Datenbank repräsentieren sowie DTO (Data Transfer Objects) Klassen.
+    config/ – Enthält Sicherheits und Programm Konfigurationen.
+    controllers/ – Enthält die REST-Controller, die HTTP-Anfragen verarbeiten.
+    dtos/ - Enthält Data Transfer Objects, um Daten zwischen Backend und Frontend zu übertragen.
+    exceptions/ – Enthält benutzerdefinierte Ausnahmen bzw. Fehlerverarbeitung, die im Projekt verwendet werden.
+    models/ – Enthält die Datenentitäten, die die Tabellen in der Datenbank repräsentieren.
     repositories/ – Enthält Repositories zur Datenbankinteraktion (CRUD-Operationen).
-    services/ – Enthält Business-Logik und die Interaktion zwischen Controllern und Repositories.
-    util/ – Enthält allgemeine Hilfsklassen, die von mehreren Modulen genutzt werden können.
+    services/ – Enthält Logik und die Interaktion zwischen Controllern und Repositories.
+    utils/ – Enthält allgemeine Hilfsklassen, die von mehreren Modulen genutzt werden können.

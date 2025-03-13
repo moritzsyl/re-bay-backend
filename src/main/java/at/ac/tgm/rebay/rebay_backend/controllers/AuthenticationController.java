@@ -2,7 +2,7 @@ package at.ac.tgm.rebay.rebay_backend.controllers;
 
 import at.ac.tgm.rebay.rebay_backend.dtos.UserDto;
 import at.ac.tgm.rebay.rebay_backend.services.AuthenticationService;
-import at.ac.tgm.rebay.rebay_backend.config.LoginResponse;
+import at.ac.tgm.rebay.rebay_backend.dtos.LoginResponseDto;
 import at.ac.tgm.rebay.rebay_backend.dtos.LoginUserDto;
 import at.ac.tgm.rebay.rebay_backend.models.User;
 import at.ac.tgm.rebay.rebay_backend.services.JwtService;
@@ -22,7 +22,6 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.POST})
     @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody UserDto userDto) {
 
@@ -31,18 +30,17 @@ public class AuthenticationController {
         return ResponseEntity.ok(registeredUser);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.POST})
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<LoginResponseDto> authenticate(@RequestBody LoginUserDto loginUserDto) {
 
-        LoginResponse loginResponse = new LoginResponse();
+        LoginResponseDto loginResponseDto = new LoginResponseDto();
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        loginResponse.setUser(authenticatedUser);
-        loginResponse.setToken(jwtToken);
-        loginResponse.setExpiresIn(jwtService.getJwtExpirationInMs());
+        loginResponseDto.setUser(authenticatedUser);
+        loginResponseDto.setToken(jwtToken);
+        loginResponseDto.setExpiresIn(jwtService.getJwtExpirationInMs());
 
-        return ResponseEntity.ok(loginResponse);
+        return ResponseEntity.ok(loginResponseDto);
     }
 }

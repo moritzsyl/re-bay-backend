@@ -19,7 +19,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET})
     @PreAuthorize("hasRole('ROLE_ANBIETER') or hasRole('ROLE_ABNEHMER') or hasRole('ROLE_ADMIN')")
     @GetMapping("/me")
     public ResponseEntity<User> authenticatedUser() {
@@ -30,7 +29,6 @@ public class UserController {
         return ResponseEntity.ok(currentUser);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.PATCH})
     @PreAuthorize("hasRole('ROLE_ANBIETER') or hasRole('ROLE_ABNEHMER') or hasRole('ROLE_ADMIN')")
     @PatchMapping("/update")
     public ResponseEntity<User> updatedUser(@RequestBody UserDto userDto) {
