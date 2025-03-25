@@ -2,7 +2,6 @@ package at.ac.tgm.rebay.rebay_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.websocket.ClientEndpoint;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 

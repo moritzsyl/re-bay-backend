@@ -45,12 +45,12 @@ public class User implements UserDetails {
     @Column(nullable = false, name = "enabled") //Spalte erlaubt keine NULL Werte und hat den Namen enabled
     private boolean enabled = false;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Request> requests;
-
     @ManyToOne(cascade = CascadeType.MERGE) //Beziehung zu einer anderen Entität. Eine Rolle kann von mehreren Benutzern verwendet werden. Wenn der User aktualisiert wird, wird auch die Rolle aktualisiert.
     @JoinColumn(name = "role_id", referencedColumnName = "role_id", nullable = false) //Fremdschlüsselbeziehung zur Role-Entität
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Request> requests;
 
     @CreationTimestamp //Erstellungsdatum
     @Column(updatable = false, name = "user_created_at") //Spalte wird beim Erstellen des Datensatzes gesetzt und hat den Namen created_at
@@ -77,21 +77,6 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return this.loginContactEmail;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
     }
 
     @Override

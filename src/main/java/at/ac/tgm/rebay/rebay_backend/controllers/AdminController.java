@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
@@ -42,15 +44,6 @@ public class AdminController {
         loginResponseDto.setExpiresIn(jwtService.getJwtExpirationInMs());
 
         return ResponseEntity.ok(loginResponseDto);
-    }
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping("/products")
-    public ResponseEntity<List<Product>> getAllProducts() {
-
-        List<Product> products = productService.getAllProducts();
-
-        return ResponseEntity.ok(products);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

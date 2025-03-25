@@ -8,7 +8,7 @@ public class LoginResponseDto {
 
     private String token;
 
-    private long expiresIn;
+    private long expires;
 
     //------------------------------------------------------------------------------------------------------------------
     //Getter und Setter für die Attribute der Klasse LoginResponseDto
@@ -41,15 +41,15 @@ public class LoginResponseDto {
      * Gibt die Ablaufzeit in Millisekunden zurück.
      * @return die Ablaufzeit in Millisekunden
      */
-    public long getExpiresIn() {
-        return expiresIn;
+    public long getExpires() {
+        return expires;
     }
 
     /**
      * Setzt die Ablaufzeit in Millisekunden.
-     * @param expiresIn die Ablaufzeit in Millisekunden
+     * @param expires die Ablaufzeit in Millisekunden
      */
-    public void setExpiresIn(long expiresIn) {
-        this.expiresIn = expiresIn;
+    public void setExpiresIn(long expires) {
+        this.expires = expires;
     }
 }

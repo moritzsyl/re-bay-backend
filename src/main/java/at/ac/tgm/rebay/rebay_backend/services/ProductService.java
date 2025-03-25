@@ -1,6 +1,7 @@
 package at.ac.tgm.rebay.rebay_backend.services;
 
 import at.ac.tgm.rebay.rebay_backend.dtos.ProductDto;
+import at.ac.tgm.rebay.rebay_backend.dtos.ProductResponseDto;
 import at.ac.tgm.rebay.rebay_backend.models.Product;
 import at.ac.tgm.rebay.rebay_backend.models.ProductImage;
 import at.ac.tgm.rebay.rebay_backend.models.Request;
@@ -44,7 +45,6 @@ public class ProductService {
             productImageRepository.save(productImage);
             savedProduct.getImages().add(productImage);
         }
-
         return this.productRepository.save(savedProduct);
     }
 
@@ -69,6 +69,12 @@ public class ProductService {
         Files.write(dateiPfad, imageBytes);
 
         return dateiPfad.toString();
+    }
+
+    private String encodeImageToBase64(String imagePath) throws IOException {
+        Path path = Paths.get(imagePath);
+        byte[] imageBytes = Files.readAllBytes(path);
+        return Base64.getEncoder().encodeToString(imageBytes);
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -115,20 +121,50 @@ public class ProductService {
         }
     }
 
-    public List<Product> getAllOwnedProducts(User owner) {
-        return this.productRepository.findByOwner(owner).orElseThrow();
+    public List<ProductResponseDto> getAllOwnedProducts(User owner) throws IOException {
+        List<Product> products = this.productRepository.findByOwner(owner).orElseThrow();
+
+        return getProductDtos(products);
     }
 
-    public Product getProduct(int id) {
-        return this.productRepository.findById(id).orElseThrow();
+    public ProductResponseDto getSingleProduct(int id) throws IOException {
+        Product product = this.productRepository.findById(id).orElseThrow();
+
+        List<String> base64Images = new ArrayList<>();
+
+        for(ProductImage image : product.getImages()) {
+            String base64Image = encodeImageToBase64(image.getImage());
+            base64Images.add(base64Image);
+        }
+
+        return new ProductResponseDto(product.getId(), product.getProductName(), product.getModel(), product.getManufacturer(), product.getStock(),
+                product.getDescription(), product.getCategory(), product.getCondition(), base64Images);
     }
 
-    public List<Product> getAllProducts() {
+    public List<ProductResponseDto> getAllProducts() throws IOException{
 
         List<Product> products = new ArrayList<>();
 
         this.productRepository.findAll().forEach(products::add);
 
-        return products;
+        return getProductDtos(products);
+    }
+
+    private List<ProductResponseDto> getProductDtos(List<Product> products) throws IOException {
+        List<ProductResponseDto> productDtos = new ArrayList<>();
+
+        for (Product product : products) {
+            List<String> base64Images = new ArrayList<>();
+
+            for (ProductImage image : product.getImages()) {
+                String base64Image = encodeImageToBase64(image.getImage());
+                base64Images.add(base64Image);
+            }
+
+            productDtos.add(new ProductResponseDto(product.getId(),product.getProductName(), product.getModel(), product.getManufacturer(), product.getStock(),
+                    product.getDescription(), product.getCategory(), product.getCondition(), base64Images));
+        }
+
+        return productDtos;
     }
 }

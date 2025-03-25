@@ -5,7 +5,9 @@ import at.ac.tgm.rebay.rebay_backend.models.ConditionEnum;
 
 import java.util.List;
 
-public class ProductDto {
+public class ProductResponseDto {
+
+    private int id;
 
     private String productName;
 
@@ -23,7 +25,8 @@ public class ProductDto {
 
     private List<String> images;
 
-    public ProductDto(String productName, String model, String manufacturer, int stock, String description, CategoryEnum category, ConditionEnum condition, List<String> images) {
+    public ProductResponseDto(int id, String productName, String model, String manufacturer, int stock, String description, CategoryEnum category, ConditionEnum condition, List<String> images) {
+        this.id = id;
         this.productName = productName;
         this.model = model;
         this.manufacturer = manufacturer;
@@ -35,6 +38,14 @@ public class ProductDto {
     }
 
     // Getter und Setter
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getProductName() {
         return productName;

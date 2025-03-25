@@ -1,6 +1,7 @@
 package at.ac.tgm.rebay.rebay_backend.controllers;
 
 import at.ac.tgm.rebay.rebay_backend.dtos.ProductDto;
+import at.ac.tgm.rebay.rebay_backend.dtos.ProductResponseDto;
 import at.ac.tgm.rebay.rebay_backend.models.Product;
 import at.ac.tgm.rebay.rebay_backend.models.User;
 import at.ac.tgm.rebay.rebay_backend.services.ProductService;
@@ -23,29 +24,29 @@ public class ProductController {
     }
 
     @GetMapping("/catalog")
-    public ResponseEntity<List<Product>> getAllCatalogProducts() {
+    public ResponseEntity<List<ProductResponseDto>> getAllCatalogProducts() throws IOException{
 
-        List<Product> products = productService.getAllProducts();
+        List<ProductResponseDto> products = productService.getAllProducts();
 
         return ResponseEntity.ok(products);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ANBIETER')")
     @GetMapping("/all")
-    public ResponseEntity<List<Product>> getAllUserOwnedProducts() {
+    public ResponseEntity<List<ProductResponseDto>> getAllUserOwnedProducts() throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         User currentUser = (User) authentication.getPrincipal();
 
-        List<Product> ownedProducts = productService.getAllOwnedProducts(currentUser);
+        List<ProductResponseDto> ownedProducts = productService.getAllOwnedProducts(currentUser);
 
         return ResponseEntity.ok(ownedProducts);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ANBIETER') or hasRole('ROLE_ABNEHMER')")
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductDetails(@PathVariable int id) {
-        Product product = productService.getProduct(id);
+    public ResponseEntity<ProductResponseDto> getProductDetails(@PathVariable int id) throws IOException {
+        ProductResponseDto product = productService.getSingleProduct(id);
 
         return ResponseEntity.ok(product);
     }
