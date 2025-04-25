@@ -48,7 +48,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ConditionEnum condition; //Der physische Zustand des Produkts (z.B. neu, gebraucht, aufgearbeitet)
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<ProductImage> images = new ArrayList<>();
 

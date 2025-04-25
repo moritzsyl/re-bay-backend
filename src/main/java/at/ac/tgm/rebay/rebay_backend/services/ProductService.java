@@ -9,11 +9,13 @@ import at.ac.tgm.rebay.rebay_backend.models.User;
 import at.ac.tgm.rebay.rebay_backend.repositories.ProductImageRepository;
 import at.ac.tgm.rebay.rebay_backend.repositories.ProductRepository;
 import at.ac.tgm.rebay.rebay_backend.repositories.RequestRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,7 +36,9 @@ public class ProductService {
     //------------------------------------------------------------------------------------------------------------------
 
     private Product saveProductImages(ProductDto createProductDto, Product savedProduct) throws IOException {
-        for (int i = 0; i < createProductDto.getImages().size(); i++) {
+        ArrayList<ProductImage> newImages = new ArrayList<>();
+
+        for (int i = 0; !createProductDto.getImages().isEmpty() && i < createProductDto.getImages().size(); i++) {
             String base64Image = createProductDto.getImages().get(i);
             String imageUrl = saveBase64Image(base64Image); // Methode zum Speichern des Bildes
 
@@ -43,8 +47,10 @@ public class ProductService {
             productImage.setIsMainImage(i == 0);
             productImage.setProduct(savedProduct);
             productImageRepository.save(productImage);
-            savedProduct.getImages().add(productImage);
+            newImages.add(productImage);
         }
+
+        savedProduct.setImages(newImages);
         return this.productRepository.save(savedProduct);
     }
 
@@ -60,6 +66,9 @@ public class ProductService {
 
     private String saveBase64Image(String base64Image) throws IOException {
         // Base64-Daten decodieren und als Datei speichern
+        if (base64Image == null || !base64Image.contains(",")) {
+            throw new IllegalArgumentException("Ungültiges oder leeres Base64-Bild empfangen.");
+        }
         String[] parts = base64Image.split(",");
         String imageDataBytes = parts[1];
         byte[] imageBytes = Base64.getDecoder().decode(imageDataBytes);
@@ -95,30 +104,27 @@ public class ProductService {
 
         Product product = this.productRepository.findById(id).orElseThrow();
 
-        if (product.getOwner().equals(owner) && product.getOwner().getId() == owner.getId()) {
-            setProductAttributes(updateProductDto, product);
-
-            // Alte Bilder löschen
-            productImageRepository.deleteByProductId(id);
-            // Neue Bilder hinzufügen
-            product.setImages(new ArrayList<>());
-            return saveProductImages(updateProductDto, product);
-        } else {
+        if (!product.getOwner().equals(owner)) {
             throw new AccessDeniedException("User is not the owner of the product");
         }
+        setProductAttributes(updateProductDto, product);
+
+        product.getImages().clear();
+
+        return saveProductImages(updateProductDto, product);
     }
 
     public Product deleteProduct(int id, User owner) {
 
         Product product = this.productRepository.findById(id).orElseThrow();
 
-        if (product.getOwner().equals(owner) && product.getOwner().getId() == owner.getId()) {
-            this.productRepository.delete(product);
-
-            return product;
-        } else {
+        if (!product.getOwner().equals(owner)) {
             throw new AccessDeniedException("User is not the owner of the product");
         }
+
+        this.productRepository.delete(product);
+
+        return product;
     }
 
     public List<ProductResponseDto> getAllOwnedProducts(User owner) throws IOException {
